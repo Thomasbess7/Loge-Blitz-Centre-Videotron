@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Loge corporative — Centre Vidéotron | Blitz Franchise</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calendrier des disponibilités de la loge corporative de Blitz Franchise au Centre Vidéotron.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7F8;
+    --card:#FFFFFF;
+    --navy:#0A1B24;
+    --navy-soft:#3C5364;
+    --cyan:#14A5C8;
+    --cyan-soft:#E4F5F9;
+    --red:#C0392B;
+    --red-soft:#FBE9E7;
+    --border:#E1E6E8;
+    --font-display:'Poppins',sans-serif;
+    --font-body:'Open Sans',sans-serif;
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--navy);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:1040px;
+    margin:0 auto;
+    padding:32px 20px 64px;
+  }
+
+  /* ---------- header ---------- */
+  .topbar{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    margin-bottom:28px;
+  }
+  .brand-logo{
+    height:42px;
+    width:170px;
+    object-fit:contain;
+    object-position:left center;
+    display:block;
+    margin-bottom:8px;
+  }
+  .topbar h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(22px,4vw,32px);
+    margin:2px 0 0;
+  }
+  .topbar p{
+    margin:4px 0 0;
+    color:var(--navy-soft);
+    font-size:14px;
+  }
+
+  /* ---------- hero : prochaine disponibilité ---------- */
+  .hero{
+    display:flex;
+    gap:20px;
+    align-items:stretch;
+    background:var(--navy);
+    border-radius:var(--radius);
+    overflow:hidden;
+    margin-bottom:28px;
+    min-height:150px;
+  }
+  .hero-img{
+    width:190px;
+    min-width:190px;
+    background-size:cover;
+    background-position:center;
+    position:relative;
+  }
+  .hero-img::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(10,27,36,0) 60%, rgba(10,27,36,.55));
+  }
+  .hero-body{
+    padding:20px 24px 20px 4px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:6px;
+    color:#fff;
+  }
+  .hero-eyebrow{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--cyan);
+  }
+  .hero-body h2{
+    margin:0;
+    font-family:var(--font-display);
+    font-size:clamp(18px,2.6vw,24px);
+  }
+  .hero-body p{
+    margin:0;
+    font-size:14px;
+    color:#C9D6DC;
+  }
+  .hero.empty{
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .hero.empty p{ color:#C9D6DC; font-size:14px; margin:0; }
+
+  /* ---------- controls ---------- */
+  .controls{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .controls h2#monthLabel{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:19px;
+    margin:0;
+    text-transform:capitalize;
+    min-width:180px;
+  }
+  .nav-btn{
+    width:32px; height:32px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--navy);
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .15s ease;
+  }
+  .nav-btn:hover{ background:var(--cyan-soft); }
+  .nav-btn:disabled{ opacity:.35; cursor:default; }
+  .nav-btn:disabled:hover{ background:var(--card); }
+
+  .legend{
+    margin-left:auto;
+    display:flex;
+    gap:18px;
+    font-size:13px;
+    color:var(--navy-soft);
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:11px; height:11px; border-radius:3px; display:inline-block; }
+  .dot.dispo{ background:var(--cyan); }
+  .dot.reserve{ background:var(--red-soft); border:1.5px solid var(--red); }
+
+  /* ---------- view toggle ---------- */
+  .view-toggle-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  .view-toggle{
+    display:inline-flex;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:3px;
+  }
+  .toggle-btn{
+    border:none;
+    background:transparent;
+    padding:7px 18px;
+    border-radius:16px;
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:13px;
+    color:var(--navy-soft);
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .toggle-btn.active{ background:var(--navy); color:#fff; }
+
+  /* ---------- list view ---------- */
+  .list-group{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .list-group-header{
+    padding:10px 18px;
+    background:var(--cyan-soft);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:14.5px;
+    color:var(--navy);
+  }
+  .list-group-thumb{
+    width:38px;
+    height:38px;
+    border-radius:8px;
+    object-fit:cover;
+    flex-shrink:0;
+  }
+  .list-group-title{ flex:1; }
+  .list-group-header .count{
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:12px;
+    color:var(--navy-soft);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .list-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:11px 18px;
+    border-top:1px solid var(--border);
+    cursor:pointer;
+    transition:background .12s ease;
+  }
+  .list-row:hover{ background:var(--bg); }
+  .list-row .list-date{ font-weight:700; font-size:13.5px; min-width:64px; }
+  .list-row .list-heure{ font-size:13px; color:var(--navy-soft); min-width:48px; }
+  .list-row .list-day{ flex:1; font-size:13px; color:var(--navy-soft); text-transform:capitalize; }
+  .list-status{
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:3px 10px;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+  .list-status.dispo{ background:var(--cyan-soft); color:var(--cyan); }
+  .list-status.reserve{ background:var(--red-soft); color:var(--red); }
+
+  @media (max-width:560px){
+    .list-row .list-day{ display:none; }
+  }
+
+  #monthControls[hidden],
+  #calendarView[hidden],
+  #listView[hidden]{
+    display:none !important;
+  }
+
+  /* ---------- calendar ---------- */
+  .calendar-wrap{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+  }
+  .weekdays{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--navy-soft);
+    padding:0 2px 8px;
+  }
+  .weekdays span{ text-align:center; }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+  }
+
+  .day{
+    aspect-ratio:1/1;
+    border-radius:10px;
+    background:var(--bg);
+    position:relative;
+    overflow:hidden;
+    border:1px solid transparent;
+  }
+  .day.empty{ background:transparent; }
+  .day .num{
+    position:absolute;
+    top:6px; left:8px;
+    font-size:11px;
+    color:var(--navy-soft);
+    z-index:2;
+  }
+  .day.today .num{ color:var(--cyan); font-weight:700; }
+
+  .day.has-event{
+    background-size:cover;
+    background-position:center;
+    cursor:pointer;
+  }
+  .day.has-event::before{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,27,36,0) 45%, rgba(10,27,36,.82) 100%);
+    z-index:1;
+  }
+  .day.has-event .num{ color:#fff; }
+  .day.has-event .label{
+    position:absolute;
+    left:6px; right:6px; bottom:6px;
+    z-index:2;
+    color:#fff;
+    font-size:10.5px;
+    font-weight:600;
+    line-height:1.2;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+
+  .day.reserved{
+    opacity:.42;
+    outline:2px solid var(--red);
+    outline-offset:-2px;
+  }
+  .day.reserved .badge{
+    position:absolute;
+    top:4px; right:4px;
+    z-index:3;
+    background:var(--red);
+    color:#fff;
+    font-size:8.5px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:2px 5px;
+    border-radius:4px;
+  }
+
+  footer{
+    margin-top:22px;
+    font-size:12.5px;
+    color:var(--navy-soft);
+    text-align:center;
+  }
+  .contact-email{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    padding:8px 16px;
+    border-radius:20px;
+    background:var(--navy);
+    color:#fff;
+    text-decoration:none;
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:13px;
+    transition:background .15s ease;
+  }
+  .contact-email:hover{ background:var(--cyan); }
+
+  .status{
+    text-align:center;
+    padding:40px 0;
+    color:var(--navy-soft);
+    font-size:14px;
+  }
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0;
+    background:rgba(10,27,36,.86);
+    display:flex; align-items:center; justify-content:center;
+    z-index:50;
+    padding:24px;
+  }
+  .lightbox[hidden]{ display:none; }
+  .lightbox-inner{
+    max-width:520px;
+    width:100%;
+    background:var(--card);
+    border-radius:var(--radius);
+    overflow:hidden;
+    position:relative;
+  }
+  .lightbox-inner img{ width:100%; display:block; }
+  .lightbox-caption{
+    padding:14px 18px;
+    font-size:14px;
+  }
+  .lightbox-caption strong{ display:block; font-family:var(--font-display); font-size:15px; margin-bottom:2px; }
+  .caption-badge{
+    display:inline-block;
+    margin-left:8px;
+    background:var(--red-soft);
+    color:var(--red);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:2px 7px;
+    border-radius:4px;
+  }
+  .caption-desc{
+    margin:8px 0 0;
+    color:var(--navy-soft);
+    font-size:13px;
+    line-height:1.45;
+  }
+  #closeLightbox{
+    position:absolute; top:8px; right:8px;
+    width:30px; height:30px;
+    border-radius:50%;
+    border:none;
+    background:rgba(10,27,36,.65);
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    z-index:2;
+  }
+
+  @media (max-width:560px){
+    .hero{ flex-direction:column; }
+    .hero-img{ width:100%; height:120px; }
+    .day .label{ font-size:9px; }
+    .legend{ margin-left:0; width:100%; order:3; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    * { transition:none !important; }
+  }
+
+  :focus-visible{
+    outline:2px solid var(--cyan);
+    outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="topbar">
+    <img class="brand-logo" src="https://assets.cdn.filesafe.space/2MyjO8xAUBH41ulVPIgd/media/69e8ec1538e07b3484754669.png" alt="Blitz Franchise">
+    <h1>Loge corporative — Centre Vidéotron</h1>
+    <p>Calendrier des disponibilités</p>
+  </header>
+
+  <section id="hero" class="hero empty">
+    <p>Chargement des disponibilités…</p>
+  </section>
+
+  <section class="view-toggle-row">
+    <div class="view-toggle" role="tablist">
+      <button id="toggleCalendar" class="toggle-btn active" data-view="calendar">Calendrier</button>
+      <button id="toggleList" class="toggle-btn" data-view="list">Liste</button>
+    </div>
+    <div class="legend">
+      <span><span class="dot dispo"></span>Disponible</span>
+      <span><span class="dot reserve"></span>Réservé</span>
+    </div>
+  </section>
+
+  <section class="controls" id="monthControls">
+    <button id="prevMonth" class="nav-btn" aria-label="Mois précédent">‹</button>
+    <h2 id="monthLabel">—</h2>
+    <button id="nextMonth" class="nav-btn" aria-label="Mois suivant">›</button>
+  </section>
+
+  <section class="calendar-wrap" id="calendarView">
+    <div class="weekdays">
+      <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+    </div>
+    <div id="grid" class="grid"></div>
+  </section>
+
+  <section class="list-wrap" id="listView" hidden>
+    <div id="listContainer"></div>
+  </section>
+
+  <footer>
+    <p>Mis à jour automatiquement à partir du registre interne Blitz Franchise.</p>
+    <a class="contact-email" href="mailto:tbessette@blitzfranchise.com" aria-label="Envoyer un courriel pour réserver une date">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      Réserver une date
+    </a>
+  </footer>
+
+</div>
+
+<div id="lightbox" class="lightbox" hidden>
+  <div class="lightbox-inner">
+    <button id="closeLightbox" aria-label="Fermer">×</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<script>
+// ------------------------------------------------------------------
+// CONFIG — coller ici l'URL /exec obtenue au déploiement d'Apps Script
+// ------------------------------------------------------------------
+const CONFIG = {
+  API_URL: "https://script.google.com/macros/s/AKfycbwwbfP_BkktMUmKKpVAi6go0OayFFK10_9SYCr9sYz5lYOBPpGQ-GTxX-X9KJ5HwH2FOw/exec"
+};
+
+const MOIS_FR = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const JOURS_FR = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
+
+let eventsByDate = {};   // "yyyy-mm-dd" -> event
+let sortedDates = [];    // dates triées, pour trouver les bornes / la prochaine dispo
+let current = new Date();
+current.setDate(1);
+
+const grid = document.getElementById('grid');
+const monthLabel = document.getElementById('monthLabel');
+const heroEl = document.getElementById('hero');
+const prevBtn = document.getElementById('prevMonth');
+const nextBtn = document.getElementById('nextMonth');
+
+function eventTitle(ev){
+  return ev.event + (ev.adversaire ? ' Vs ' + ev.adversaire : '');
+}
+
+function pad(n){ return n < 10 ? '0'+n : ''+n; }
+function toKey(y,m,d){ return y+'-'+pad(m+1)+'-'+pad(d); }
+
+function parseKeyToDate(key){
+  const [y,m,d] = key.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+
+function formatLongDateFr(date){
+  return JOURS_FR[date.getDay()].replace(/^./, c=>c.toUpperCase()) + ' ' + date.getDate() + ' ' + MOIS_FR[date.getMonth()] + ' ' + date.getFullYear();
+}
+
+async function loadData(){
+  try {
+    const res = await fetch(CONFIG.API_URL + '?t=' + Date.now());
+    if(!res.ok) throw new Error('Réponse ' + res.status);
+    const data = await res.json();
+
+    eventsByDate = {};
+    data.forEach(ev => {
+      if(!ev.date) return;
+      eventsByDate[ev.date] = ev;
+    });
+    sortedDates = Object.keys(eventsByDate).sort();
+
+    if(sortedDates.length){
+      const today = new Date(); today.setHours(0,0,0,0);
+      const todayKey = toKey(today.getFullYear(), today.getMonth(), today.getDate());
+      // se placer sur le mois courant si des données existent autour, sinon sur le premier mois disponible
+      const hasCurrentOrFuture = sortedDates.some(k => k >= todayKey);
+      const startKey = hasCurrentOrFuture ? sortedDates.find(k => k >= todayKey) : sortedDates[0];
+      const startDate = parseKeyToDate(startKey);
+      current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    }
+
+    renderHero();
+    renderCalendar();
+  } catch(err){
+    heroEl.innerHTML = '<p>Impossible de charger les disponibilités pour le moment.</p>';
+    grid.innerHTML = '<div class="status">Vérifiez la connexion ou réessayez plus tard.</div>';
+    console.error(err);
+  }
+}
+
+function renderHero(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayKey = toKey(today.getFullYear(), today.getMonth(), today.getDate());
+
+  const nextKey = sortedDates.find(k => k >= todayKey && !eventsByDate[k].reserved);
+
+  if(!nextKey){
+    heroEl.className = 'hero empty';
+    heroEl.innerHTML = '<p>Aucune date disponible pour le moment — toutes les soirées à venir sont réservées.</p>';
+    return;
+  }
+
+  const ev = eventsByDate[nextKey];
+  const d = parseKeyToDate(nextKey);
+
+  heroEl.className = 'hero';
+  heroEl.innerHTML = `
+    <div class="hero-img" style="background-image:url('${ev.image}')"></div>
+    <div class="hero-body">
+      <span class="hero-eyebrow">Prochaine disponibilité</span>
+      <h2>${eventTitle(ev) || 'Soirée à la loge'}</h2>
+      <p>${formatLongDateFr(d)}${ev.heure ? ' — ' + ev.heure : ''}</p>
+    </div>
+  `;
+}
+
+function renderCalendar(){
+  const year = current.getFullYear();
+  const month = current.getMonth();
+
+  monthLabel.textContent = MOIS_FR[month] + ' ' + year;
+
+  const firstOfMonth = new Date(year, month, 1);
+  // lundi = 0 ... dimanche = 6
+  const startOffset = (firstOfMonth.getDay() + 6) % 7;
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayKey = toKey(today.getFullYear(), today.getMonth(), today.getDate());
+
+  let html = '';
+
+  for(let i=0; i<startOffset; i++){
+    html += '<div class="day empty"></div>';
+  }
+
+  for(let d=1; d<=daysInMonth; d++){
+    const key = toKey(year, month, d);
+    const ev = eventsByDate[key];
+    const isToday = key === todayKey;
+
+    if(ev){
+      const reservedClass = ev.reserved ? ' reserved' : '';
+      const todayClass = isToday ? ' today' : '';
+      html += `
+        <div class="day has-event${reservedClass}${todayClass}" style="background-image:url('${ev.image}')" data-key="${key}">
+          <span class="num">${d}</span>
+          ${ev.reserved ? '<span class="badge">Réservé</span>' : ''}
+          <span class="label">${eventTitle(ev)}</span>
+        </div>`;
+    } else {
+      html += `<div class="day${isToday ? ' today' : ''}"><span class="num">${d}</span></div>`;
+    }
+  }
+
+  grid.innerHTML = html;
+
+  // bornes de navigation : un mois avant la première date connue, un mois après la dernière
+  if(sortedDates.length){
+    const minD = parseKeyToDate(sortedDates[0]);
+    const maxD = parseKeyToDate(sortedDates[sortedDates.length-1]);
+    prevBtn.disabled = (year < minD.getFullYear()) || (year === minD.getFullYear() && month <= minD.getMonth());
+    nextBtn.disabled = (year > maxD.getFullYear()) || (year === maxD.getFullYear() && month >= maxD.getMonth());
+  }
+
+  grid.querySelectorAll('.day.has-event').forEach(el => {
+    el.addEventListener('click', () => openLightbox(el.dataset.key));
+  });
+}
+
+function openLightbox(key){
+  const ev = eventsByDate[key];
+  if(!ev) return;
+  const d = parseKeyToDate(key);
+  document.getElementById('lightboxImg').src = ev.image;
+  document.getElementById('lightboxCaption').innerHTML = `
+    <strong>${eventTitle(ev)}</strong>
+    ${formatLongDateFr(d)}${ev.heure ? ' — ' + ev.heure : ''}
+    ${ev.reserved ? '<span class="caption-badge">Réservé</span>' : ''}
+    ${ev.description ? '<p class="caption-desc">' + ev.description + '</p>' : ''}
+  `;
+  document.getElementById('lightbox').hidden = false;
+}
+
+document.getElementById('closeLightbox').addEventListener('click', () => {
+  document.getElementById('lightbox').hidden = true;
+});
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if(e.target.id === 'lightbox') e.target.hidden = true;
+});
+
+prevBtn.addEventListener('click', () => {
+  current.setMonth(current.getMonth()-1);
+  renderCalendar();
+});
+nextBtn.addEventListener('click', () => {
+  current.setMonth(current.getMonth()+1);
+  renderCalendar();
+});
+
+function renderList(){
+  const container = document.getElementById('listContainer');
+
+  if(!sortedDates.length){
+    container.innerHTML = '<div class="status">Aucune donnée disponible.</div>';
+    return;
+  }
+
+  // regroupe par nom d'évènement, en conservant l'ordre chronologique
+  const groups = {};
+  const order = [];
+  sortedDates.forEach(key => {
+    const ev = eventsByDate[key];
+    const name = ev.event || 'Autre';
+    if(!groups[name]){ groups[name] = []; order.push(name); }
+    groups[name].push(key);
+  });
+
+  const otherNames = order.filter(n => !n.toLowerCase().includes('remparts'));
+  const rempartsNames = order.filter(n => n.toLowerCase().includes('remparts'));
+  const finalOrder = [...otherNames, ...rempartsNames];
+
+  let html = '';
+  finalOrder.forEach(name => {
+    const keys = groups[name];
+    const thumb = eventsByDate[keys[0]].image || '';
+    const reservedCount = keys.filter(k => eventsByDate[k].reserved).length;
+    const dispoCount = keys.length - reservedCount;
+    const countLabel = `${dispoCount} disponible${dispoCount > 1 ? 's' : ''} · ${reservedCount} réservé${reservedCount > 1 ? 's' : ''}`;
+    html += `<div class="list-group">
+      <div class="list-group-header">
+        ${thumb ? `<img class="list-group-thumb" src="${thumb}" alt="">` : ''}
+        <span class="list-group-title">${name}</span>
+        <span class="count">${countLabel}</span>
+      </div>`;
+
+    keys.forEach(key => {
+      const ev = eventsByDate[key];
+      const d = parseKeyToDate(key);
+      const shortDate = d.getDate() + ' ' + MOIS_FR[d.getMonth()].slice(0, 3) + '.';
+
+      html += `
+        <div class="list-row" data-key="${key}">
+          <span class="list-date">${shortDate}</span>
+          <span class="list-heure">${ev.heure || ''}</span>
+          <span class="list-day">${ev.adversaire ? 'Vs ' + ev.adversaire : JOURS_FR[d.getDay()]}</span>
+          <span class="list-status ${ev.reserved ? 'reserve' : 'dispo'}">${ev.reserved ? 'Réservé' : 'Disponible'}</span>
+        </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+  container.querySelectorAll('.list-row').forEach(el => {
+    el.addEventListener('click', () => openLightbox(el.dataset.key));
+  });
+}
+
+function switchView(view){
+  document.getElementById('toggleCalendar').classList.toggle('active', view === 'calendar');
+  document.getElementById('toggleList').classList.toggle('active', view === 'list');
+  document.getElementById('monthControls').hidden = view !== 'calendar';
+  document.getElementById('calendarView').hidden = view !== 'calendar';
+  document.getElementById('listView').hidden = view !== 'list';
+  if(view === 'list') renderList();
+}
+
+document.getElementById('toggleCalendar').addEventListener('click', () => switchView('calendar'));
+document.getElementById('toggleList').addEventListener('click', () => switchView('list'));
+
+loadData();
+</script>
+
+</body>
+</html>
